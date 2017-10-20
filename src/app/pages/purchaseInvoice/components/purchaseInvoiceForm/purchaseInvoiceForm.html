@@ -1,0 +1,125 @@
+<p-panel>
+  <p-header>
+    <div class="row">
+      <div class="col">
+        <h4>Purchase Invoice Form</h4>
+      </div>
+      <div class="col">
+        <a routerLink="/pages/purchaseInvoice/table">
+          <button type="button" class="btn btn-primary btn-xs" style="float:right; margin-right:6px;">
+            <i ng-reflect-class-name="fa fa-file-text-o" class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></i>
+          </button>
+        </a>
+      </div>
+    </div>
+  </p-header>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value,$event)" class="form-horizontal">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-xl-4 col-lg-5 col-md-6 col-sm-6 col-12">
+            <div class="ui-inputgroup">
+              <label for="invoiceDate">Invoice Date</label>
+              <br/>
+              <p-calendar id="invoiceDatePicker" formControlName="invoiceDate" showIcon="true" dateFormat="yy-mm-dd"></p-calendar>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    &nbsp;
+    <br/>
+    <p-panel>
+      <div class="row">
+        <div class=" col-sm-12">
+          <form [formGroup]="purchaseInvoiceItemFormGroup" class="form-horizontal">
+            <div class="row">
+              <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
+                <div class="form-group">
+                  <label for="item">Item</label>
+                  <br/>
+                  <p-autoComplete id="itemSelector" formControlName="item" field="display" [suggestions]="filteredItems" (completeMethod)="filterItems($event)"
+                    [size]="20" [minLength]="1" placeholder="Search" (onDropdownClick)="handleItemDropdownClick($event)" (onSelect)="onItemSelect($event)">
+                    <ng-template let-option pTemplate="option">
+                      <div class="ui-helper-clearfix">
+                        <div>{{option.code}} : {{option.name}}</div>
+                      </div>
+                    </ng-template>
+                  </p-autoComplete>
+                </div>
+              </div>
+              <div class="col-xl-4 col-lg-5 col-md-6 col-sm-6 col-12">
+                <div class="ui-inputgroup">
+                  <div class="form-group" [ngClass]="{'has-error': (! purchaseInvoiceItemFormGroup.controls['quantity'].valid &&  purchaseInvoiceItemFormGroup.controls['Quantity'].touched), 'has-success': ( purchaseInvoiceItemFormGroup.controls['quantity'].valid && purchaseInvoiceItemFormGroup.controls['quantity'].touched)}">
+                    <label for="quantity">Quantity</label>
+                    <br/>
+                    <input type="number" pInputText formControlName="quantity">
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
+                <div class="ui-inputgroup">
+                  <div class="form-group" [ngClass]="{'has-error': (! purchaseInvoiceItemFormGroup.controls['price'].valid &&  purchaseInvoiceItemFormGroup.controls['price'].touched), 'has-success': ( purchaseInvoiceItemFormGroup.controls['price'].valid && purchaseInvoiceItemFormGroup.controls['price'].touched)}">
+                    <label for="price">Price</label>
+                    <br/>
+                    <input type="number" #price (keyup.enter)="onEnter(price.value,dt)" pInputText formControlName="price">
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <label for="inputFirstName">&nbsp;</label>
+                <br/>
+                <div class="form-group form-inline">
+                  <button (click)="onEnter(price.value,dt)" pButton type="button" class="ui-button-secondary" icon="fa-plus-circle" label="Add"></button> &nbsp;&nbsp;
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <p-dataTable #dt (onEditComplete)="onEditComplete()" [value]="formGroup.value.purchaseInvoiceItemList" [editable]="true"
+                [rows]="20" [responsive]="true" resizableColumns="true">
+                <p-column field="id" header="ID"></p-column>
+                <p-column field="item.name" header="Item Name"></p-column>
+                <p-column field="item.code" header="Item Code"></p-column>
+                <p-column field="price" header="Price" styleClass="text-right" [editable]="true">
+                  <ng-template let-col let-purchaseInvoiceItem="rowData" pTemplate="body">
+                    {{ purchaseInvoiceItem.price | number : '1.2-2' }}
+                  </ng-template>
+                </p-column>
+                <p-column field="quantity" header="Quantity" styleClass="text-right" [editable]="true"></p-column>
+                <p-column field="amount" header="Amount" styleClass="text-right">
+                  <ng-template let-col let-purchaseInvoiceItem="rowData" pTemplate="body">
+                    {{ purchaseInvoiceItem.amount | number : '1.2-2' }}
+                  </ng-template>
+                </p-column>
+                <p-column header="Action" styleClass="text-right">
+                  <ng-template let-data="rowData" let-rowIndex="rowIndex" pTemplate="body">
+                    <i (click)="removePurchaseInvoiceItem(rowIndex)" ng-reflect-class-name="fa fa-trash-o" class="fa fa-trash-o"></i>
+                  </ng-template>
+                </p-column>
+                <p-footerColumnGroup>
+                  <p-row>
+                    <p-column footer="Totals:" colspan="3" styleClass="text-right"></p-column>
+                    <p-column footer="{{formGroup.value.quantity}}" styleClass="text-right"></p-column>
+                    <p-column footer="{{formGroup.value.amount | number : '1.2-2' }}" styleClass="text-right"></p-column>
+                    <p-column footer=""></p-column>
+                  </p-row>
+                </p-footerColumnGroup>
+              </p-dataTable>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-panel>
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        &nbsp;
+        <br/>
+        <button pButton [disabled]="!formGroup.valid" type="submit" icon="fa-floppy-o" label="Save"></button>
+        <button type="button" pButton class="ui-button-secondary" (click)="resetForm()" icon="fa-times" label="Reset"></button>
+        <button type="button" pButton (click)="refresh()" class="ui-button-info" icon="fa-refresh" label="Refresh"></button>
+      </div>
+    </div>
+  </form>
+</p-panel>
