@@ -7,19 +7,19 @@
 
 <title><%= htmlWebpackPlugin.options.title %></title>
 
-<meta name="description"
-	content="<%= htmlWebpackPlugin.options.metadata.description %>">
+<meta name="description" 	content="<%= htmlWebpackPlugin.options.metadata.description %>">
 
 <% if (webpackConfig.htmlElements.headTags) { %>
 <!-- Configured Head Tags  -->
 <%= webpackConfig.htmlElements.headTags %> <% } %>
 
-<!-- base url -->
-<base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
+<!-- base url
+<base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>"> -->
+<base href=""> -->
 
 <!-- primeng styles -->
-<link rel="stylesheet" type="text/css" href="/assets/primeng/resources/themes/darkness/theme.css" />
-<link rel="stylesheet" type="text/css" href="/assets/primeng/resources/primeng.min.css" />
+<link rel="stylesheet" type="text/css" href="assets/primeng/resources/themes/darkness/theme.css" />
+<link rel="stylesheet" type="text/css" href="assets/primeng/resources/primeng.min.css" />
 
 <!-- w3 styles
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">

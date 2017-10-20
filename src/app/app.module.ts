@@ -13,8 +13,6 @@ import { ConfirmDialogModule, GrowlModule, ConfirmationService } from 'primeng/p
 import { ENV_PROVIDERS } from './environment';
 import { routing } from './app.routing';
 
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuth } from 'angularfire2/auth';
 // App is our top level component
 import { App } from './app.component';
 import { APP_CONFIG, AppConfig } from './app.config';
@@ -25,11 +23,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PagesModule } from './pages/pages.module';
 
 import { SharedService } from './services/shared.service';
-import { UserService } from './user.service';
-import { environment } from '../environments/environment';
+import { UserService } from "./user.service";
 
 import {HttpClientModule} from '@angular/common/http';
-import { AuthService } from './services/auth.service';
+import { AuthService } from "./services/auth.service";
 // Application wide providers
 const APP_PROVIDERS = [
   AppState,
@@ -61,8 +58,7 @@ export type StoreType = {
     PagesModule,
     GrowlModule,
     ConfirmDialogModule,
-    routing,
-    AngularFireModule.initializeApp(environment.firebase)
+    routing
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
@@ -70,7 +66,6 @@ export type StoreType = {
     ConfirmationService,
     SharedService,
     AuthService,
-    AngularFireAuth,
     { provide: APP_CONFIG, useValue: AppConfig }
   ]
 })

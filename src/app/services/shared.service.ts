@@ -2,8 +2,11 @@ import { Injectable, Inject } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Subject } from 'rxjs/Subject';
+    
 
 import { APP_CONFIG, IAppConfig } from '../app.config';
+
+//import { Message } from 'primeng/primeng';
 
 @Injectable()
 export class SharedService {
@@ -12,10 +15,11 @@ export class SharedService {
 
   addMessage(message: any) {
     this.messageSubject.next(message);
-    console.log('Message added: ' + message)
+    console.log("Message added: " + message)
   }
 
   ngOnInit(): void {
+    //this.addMessage({ cc: 'fgbsdhgrhrdhdry' });
   }
 
   YYYYMMDD(date: Date): string {
@@ -30,6 +34,7 @@ export class SharedService {
     return [year, month, day].join('-');
   }
 
+
   millisToDuration(millis: number) {
     let days = Math.floor(millis / 86400000);
     millis = (millis - days * 86400000);
@@ -37,7 +42,7 @@ export class SharedService {
     millis = (millis - hours * 3600000);
     let minutes = Math.floor(millis / 60000);
     let seconds: number = parseInt(((millis % 60000) / 1000).toFixed(0));
-    return (days < 10 ? '0' : '') + days + ' ' + (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+    return (days < 10 ? '0' : '') + days + " " + (hours < 10 ? '0' : '') + hours + ":" + (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
   }
 
 

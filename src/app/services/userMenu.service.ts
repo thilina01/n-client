@@ -3,7 +3,7 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { APP_CONFIG, IAppConfig } from '../app.config';
-import { AuthService } from './auth.service';
+import { AuthService } from "./auth.service";
 
 @Injectable()
 export class UserMenuService {
@@ -14,11 +14,12 @@ export class UserMenuService {
   private getJsonHeaders(): Headers {
     return new Headers({
       'Content-Type': 'application/json',
-      'email': this.authService.email
+      'email': this.authService.getEmail()
     });
   };
   constructor(private http: Http, @Inject(APP_CONFIG) private config: IAppConfig, private authService: AuthService) {
     this.apiUrl = config.apiEndpoint + 'userMenus/';
+    //this.headers = new Headers(config.jsonHeaders);
   }
 
   getAll(): Promise<Array<Object>> {
@@ -28,27 +29,27 @@ export class UserMenuService {
       .catch(this.handleError);
   }
   getByUserId(userId: number): Promise<Array<Object>> {
-    return this.http.get(this.apiUrl + 'userId/' + userId, { headers: this.getJsonHeaders() })
+    return this.http.get(this.apiUrl + "userId/" + userId, { headers: this.getJsonHeaders() })
       .toPromise()
       .then(response => response.json() as Array<Object>)
       .catch(this.handleError);
   }
   getOwn(): Promise<Array<Object>> {
-    return this.http.get(this.apiUrl + 'own', { headers: this.getJsonHeaders() })
+    return this.http.get(this.apiUrl + "own", { headers: this.getJsonHeaders() })
       .toPromise()
       .then(response => response.json() as Array<Object>)
       .catch(this.handleError);
   }
 
   getPage(page, size): Promise<Array<Object>> {
-    return this.http.get(this.apiUrl + 'page?page=' + page + '&size=' + size, { headers: this.getJsonHeaders() })
+    return this.http.get(this.apiUrl + "page?page=" + page + "&size=" + size, { headers: this.getJsonHeaders() })
       .toPromise()
       .then(response => response.json() as Array<Object>)
       .catch(this.handleError);
   }
 
   getCombo(): Promise<Array<Object>> {
-    return this.http.get(this.apiUrl + 'combo', { headers: this.getJsonHeaders() })
+    return this.http.get(this.apiUrl + "combo", { headers: this.getJsonHeaders() })
       .toPromise()
       .then(response => response.json() as Array<Object>)
       .catch(this.handleError);
@@ -71,8 +72,9 @@ export class UserMenuService {
 
   toggle(userId: number, menuId: number): Promise<Object> {
     return this.http
-      .post(this.apiUrl + 'toggle/' + userId + '/' + menuId, { headers: this.getJsonHeaders() })
+      .post(this.apiUrl + "toggle/" + userId + "/" + menuId, { headers: this.getJsonHeaders() })
       .toPromise()
+      //.then(res => res.json().data)
       .catch(this.handleError);
   }
 

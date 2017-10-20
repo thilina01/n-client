@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 import 'style-loader!./login.scss';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     selector: 'login',
@@ -32,22 +33,27 @@ export class Login {
         this.authService.logout();
     }
 
-    public onSubmit(values: Object): void {
+    public onSubmit(values: any): void {
         this.submitted = true;
         if (this.form.valid) {
-            this.authService.afLogin(values).then((res: any) => {
-                if (!res.code) {
-                    this.authService.login(values).subscribe(response => {
-                        if (response) {
-                            this.router.navigate([this.authService.redirectUrl]);
-                        } else {
-                            alert('Login Failed (Internal)')
-                        }
-                    });
+            this.authService.login(values).subscribe(response => {
+                if (response) {
+                    Cookie.set('email', values.email);
+                    // this.authService.email = values.email;
+                    this.router.navigate([this.authService.redirectUrl]);
                 } else {
-                    alert('Login Failed (External)');
+                    alert("Login Failed")
                 }
-            })
+            });
+
+            /*
+                        this.authService.login(values).then(() => {
+                            if (this.authService.isLoggedIn) {
+                                let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/pages/plan';
+                                this.router.navigate([redirect]);
+                                //window.location.href = '/#' + redirect;
+                            }
+                        });*/
         }
     }
 }

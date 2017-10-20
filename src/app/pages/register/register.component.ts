@@ -7,6 +7,7 @@ import { AuthService } from "../../services/auth.service";
 import { SharedService } from "../../services/shared.service";
 import { Router } from "@angular/router";
 import { UserService } from "../user/user.service";
+//import { Router } from "@angular/router/router";
 
 @Component({
   selector: 'register',
@@ -53,19 +54,19 @@ export class Register {
     this.submitted = true;
     if (this.form.valid) {
       values.password = values.passwords.password;
-      this.authService.addUser(values).then((res: any) => {
-        if (res.success) {
-          this.userService.save(values).subscribe(
-            data => {
-              this.sharedService.addMessage({ severity: 'info', summary: 'Success', detail: 'Wait for the activation confirmation mail.' });
-              this.form.reset();
-              this.router.navigate(['/login']);
-            }
-          );
+      this.userService.save(values).subscribe(
+        data => {
+          this.sharedService.addMessage({ severity: 'info', summary: 'Success', detail: 'Wait for the activation confirmation mail.' });
+          this.form.reset();
+          this.router.navigate(['/login']);
         }
-        else
-          alert('Error' + res);
-      })
+      );
     }
+    else
+      alert('Error');
+
+    // your code goes here
+    // console.log(values);
   }
 }
+
