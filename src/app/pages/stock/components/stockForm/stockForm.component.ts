@@ -10,8 +10,8 @@ import { ItemService } from '../../../item/item.service';
 @Component({
     selector: 'stock-form',
     encapsulation: ViewEncapsulation.None,
-    styleUrls: ['./StockForm.scss'],
-    templateUrl: './StockForm.html',
+    styleUrls: ['./stockForm.scss'],
+    templateUrl: './stockForm.html',
 })
 export class StockForm {
     item: any;
